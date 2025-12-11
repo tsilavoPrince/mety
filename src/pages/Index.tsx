@@ -8,6 +8,7 @@ import ApproachSection from "@/components/ApproachSection";
 import ContactSection from "@/components/ContactSection";
 import "@/styles/animations.css";
 import PricingSection from "@/components/PricingSection";
+import ServicesSection from "@/components/ServiceSection";
 
 // Type pour les données du service sélectionné
 interface SelectedService {
@@ -22,10 +23,10 @@ const Index = () => {
   // Fonction pour gérer la sélection d'un service depuis le Header
   const handleServiceSelect = (service: SelectedService) => {
     setSelectedService(service);
-    
+
     // Optionnel : Ajouter un effet de feedback visuel
     console.log(`Service sélectionné : ${service.label}`);
-    
+
     // Optionnel : Faire défiler automatiquement vers ContactSection
     // (Le Header le fait déjà, mais on peut aussi le gérer ici)
     setTimeout(() => {
@@ -58,7 +59,7 @@ const Index = () => {
             <span className="font-medium text-sm">
               Service sélectionné : <span className="font-bold">{selectedService.label}</span>
             </span>
-            <button 
+            <button
               onClick={handleClearService}
               className="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg transition-colors"
             >
@@ -72,18 +73,18 @@ const Index = () => {
       <div className="relative z-10">
         {/* Passer la fonction de callback au Header */}
         <Header onServiceSelect={handleServiceSelect} />
-        
+
         <HeroSection />
         <AboutSection />
         <ProjectsSection />
-        <ApproachSection />
-        
+
+        <ServicesSection />
+
         {/* Passer le service sélectionné à ContactSection */}
-        <ContactSection 
-          selectedService={selectedService}
-          onServiceClear={handleClearService} // Optionnel : pour effacer depuis ContactSection
+        <ContactSection
+          selectedService={selectedService}// Optionnel : pour effacer depuis ContactSection
         />
-        
+
         {/* <PricingSection /> */}
         <Footer />
       </div>

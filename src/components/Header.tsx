@@ -93,33 +93,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
     { id: "contact", href: "#contact", icon: Mail, label: "Contact" },
   ];
 
-  const serviceOptions = [
-    { 
-      value: "Site web / E-commerce", 
-      label: "Site web / E-commerce",
-      icon: <Globe className="w-4 h-4" />,
-    },
-    { 
-      value: "Application mobile", 
-      label: "Application mobile",
-      icon: <Smartphone className="w-4 h-4" />,
-    },
-    { 
-      value: "Design UI/UX", 
-      label: "Design UI/UX",
-      icon: <Palette className="w-4 h-4" />,
-    },
-    { 
-      value: "Marketing digital", 
-      label: "Marketing digital",
-      icon: <TrendingUp className="w-4 h-4" />,
-    },
-    { 
-      value: "Autre projet", 
-      label: "Autre",
-      icon: <Code className="w-4 h-4" />,
-    },
-  ];
+
 
   const handleServiceClick = (service: string, label: string) => {
     // Créer l'objet service sélectionné
@@ -724,6 +698,8 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 { href: "#accueil", label: "Accueil", icon: "" },
                 { href: "#about", label: "À Propos", icon: "" },
                 { href: "#realisations", label: "Nos Réalisations", icon: "" },
+                    { href: "#services", label: "Nos Services", icon: "" },
+                      
               ].map((item, index) => (
                 <a
                   key={item.href}
@@ -758,22 +734,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <button
-                  className={`nav-item relative px-4 py-3 rounded-xl transition-all duration-300 text-sm font-medium group flex items-center gap-2 ${
-                    activeSection === "services" || servicesDropdownOpen
-                      ? "text-orange-400 active"
-                      : scrolled
-                      ? "text-gray-200 hover:text-orange-400"
-                      : "text-white/95 hover:text-orange-400"
-                  }`}
-                  onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
-                  style={{ animationDelay: "300ms" }}
-                >
-                  <span className="flex items-center space-x-2 relative z-10">
-                    <span>Nos Services</span>
-                    <ChevronDown className={`w-4 h-4 dropdown-arrow ${servicesDropdownOpen ? "open" : ""}`} />
-                  </span>
-                </button>
+                
 
                 {/* Dropdown Menu */}
                 <div 
@@ -781,21 +742,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                   onMouseEnter={handleDropdownMouseEnter}
                   onMouseLeave={handleDropdownMouseLeave}
                 >
-                  {serviceOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      className="service-option"
-                      onClick={() => handleServiceClick(option.value, option.label)}
-                    >
-                      <div className="service-icon">
-                        {option.icon}
-                      </div>
-                      <div className="service-content">
-                        <div className="service-label">{option.label}</div>
-                        <div className="service-description">{option.description}</div>
-                      </div>
-                    </button>
-                  ))}
+             
                 </div>
               </div>
 
@@ -867,34 +814,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
 
             {/* Icône mobile - SEULE L'ICÔNE ACTIVE EST VISIBLE */}
             <div className="lg:hidden flex items-center space-x-14">
-              <div className="mobile-icons-container">
-                {mobileIcons.map((item) => {
-                  const IconComponent = item.icon;
-                  return (
-                    <div
-                      key={item.id}
-                      className={`mobile-icon-wrapper ${
-                        activeSection === item.id ? "active" : ""
-                      }`}
-                    >
-                      <a
-                        href={item.href}
-                        className={`mobile-icon group ${
-                          activeSection === item.id ? "active" : ""
-                        }`}
-                      >
-                        <IconComponent
-                          className={`transition-all duration-300 w-8 h-8 ${
-                            activeSection === item.id
-                              ? "text-orange-400"
-                              : "text-white"
-                          }`}
-                        />
-                      </a>
-                    </div>
-                  );
-                })}
-              </div>
+              
               <button
                 className="relative w-14 h-14 flex flex-col justify-center items-center rounded-2xl transition-all duration-300 hover:bg-orange-500/40 p-3 ml-4 border-2 border-orange-500/50 backdrop-blur-sm shadow-xl"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -947,23 +867,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                   ))}
                   
                   {/* Sous-menu des services pour mobile */}
-                  <div className="pl-4 space-y-2 border-l border-orange-500/20 ml-2">
-                    <p className="text-xs text-orange-300 font-semibold mb-2">Types de services :</p>
-                    {serviceOptions.map((option) => (
-                      <a
-                        key={option.value}
-                        href="#contact"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleServiceClick(option.value, option.label);
-                          setMobileMenuOpen(false);
-                        }}
-                        className="block pl-4 py-2 text-sm text-gray-300 hover:text-orange-400 transition-colors"
-                      >
-                        • {option.label}
-                      </a>
-                    ))}
-                  </div>
+            
                   
                   <div className="relative">
                     <div className="absolute inset-0 w-full h-[120px]">
