@@ -46,6 +46,45 @@ const ProjectsSection = () => {
     }
   ];
 
+
+useEffect(() => {
+  if (!sectionRef.current) return;
+
+  const ctx = gsap.context(() => {
+    const cards = gsap.utils.toArray<HTMLElement>(".portfolio-item");
+
+    // Position initiale
+    gsap.set(cards, { y: 200, opacity: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 0.5%", // plus bas pour ne pas bloquer trop tôt
+        end: "+=800",
+        scrub: true,
+        pin: true, // désactive le pin si c'est lui qui casse la page
+      },
+    });
+
+    cards.forEach((card, index) => {
+      tl.to(
+        card,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        index * 0.6
+      );
+    });
+  }, sectionRef);
+
+  return () => ctx.revert();
+}, []);
+
+
+
   useEffect(() => {
     const loadProjects = async () => {
       setIsLoading(true);
@@ -100,7 +139,7 @@ const ProjectsSection = () => {
         <div className="container mx-auto px-6 max-w-6xl">
           {/* TITRE PRINCIPAL */}
           <div className="text-center mb-16">
-            <h2 className="section-title text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent mb-6">
+            <h2 className="section-title text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-200 via-orange-300 to-orange-600 bg-clip-text text-transparent mb-6">
               Nos réalisations
             </h2>
             <p className="section-subtitle text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
@@ -135,7 +174,7 @@ const ProjectsSection = () => {
           <div className="text-center">
             <button
               onClick={() => setShowModal(true)}
-              className="btn btn-primary inline-flex items-center gap-2 px-8 py-4  hover:bg-white-300 text-orange-500 font-bold text-lg rounded-xl shadow-xl hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-1 border border-orange-400/50"
+              className="btn btn-primary inline-flex items-center gap-2 px-8 py-4  hover:bg-white-300 text-orange-300 font-bold text-lg rounded-xl shadow-xl hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-1 border border-orange-400/50"
             >
               Voir toutes nos réalisations
             </button>
@@ -155,19 +194,23 @@ const ProjectsSection = () => {
           gap: 2rem;
           margin-top: 3rem;
         }
+
         .portfolio-item {
-          background: rgba(185, 87, 31, 0.95);
-          border-radius: 15px;
-          overflow: hidden;
-          transition: transform 0.3s ease;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-          border: 1px solid rgba(255,255,255,0.2);
-          cursor: pointer;
-        }
-        .portfolio-item:hover {
-          transform: scale(1.05);
-          box-shadow: 0 20px 50px rgba(251, 146, 60, 0.3);
-        }
+  background: rgba(165, 102, 31, 0.95);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+.portfolio-item:hover {
+  box-shadow: 0 20px 50px rgba(251, 146, 60, 0.3);
+}
+
         .portfolio-image {
           height: 200px;
           background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
@@ -182,7 +225,7 @@ const ProjectsSection = () => {
           background: rgba(54, 52, 52, 0.95);
         }
         .portfolio-content h3 {
-          color: #f97316;
+          color: #eca740ff;
           margin-bottom: 0.5rem;
           font-size: 1.25rem;
           font-weight: 700;
