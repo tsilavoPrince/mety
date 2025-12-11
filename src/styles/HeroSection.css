@@ -1,0 +1,364 @@
+/* ===============================
+   🌈 VARIABLES GLOBALES
+================================ */
+:root {
+  /* ⚙️ Contrôles d'opacité et intensité */
+  --bg-opacity: 1;
+  --overlay-opacity: 0.85;
+  --orange-intensity: 0.25;
+  --blue-intensity: 0.25;
+  --blur-intensity: 20px;
+
+  /* 🌌 Image de fond */
+  --image-brightness: 0.65;
+  --image-contrast: 1.15;
+  --image-saturation: 1.15;
+  --image-blur: 10px;
+
+  /* 🌟 Effets lumineux & profondeur */
+  --orange-glow-opacity: 0.3;
+  --badge-orange-intensity: 0.45;
+  --base-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --soft-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --transition-base: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+/* ===============================
+   🌠 HERO SECTION BACKGROUND
+================================ */
+.hero-bg {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(249, 115, 22, var(--orange-intensity)), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, var(--blue-intensity)), transparent 55%),
+    linear-gradient(to right, rgba(2, 6, 23, var(--bg-opacity)), rgba(2, 6, 23, var(--bg-opacity)));
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 80px;
+  backdrop-filter: blur(var(--blur-intensity));
+  -webkit-backdrop-filter: blur(var(--blur-intensity));
+  box-shadow: var(--soft-shadow);
+}
+
+
+
+
+/* ===============================
+   🏔️ IMAGE DE FOND FLOUTÉE
+================================ */
+.baobab-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/images/cover.jpg') center/cover no-repeat;
+  filter:
+    brightness(var(--image-brightness))
+    contrast(var(--image-contrast))
+    saturate(var(--image-saturation))
+    blur(var(--image-blur));
+  z-index: 0;
+  opacity: 0.85;
+  transform: scale(1.05);
+  transition: var(--transition-base);
+}
+
+
+
+
+/* ===============================
+   🌫️ OVERLAY SOMBRE ET GLOW
+================================ */
+.baobab-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      rgba(249, 115, 22, calc(var(--orange-intensity) * 0.2)) 0%,
+      transparent 50%,
+      rgba(59, 130, 246, calc(var(--blue-intensity) * 0.2)) 100%),
+    linear-gradient(to bottom,
+      rgba(2, 6, 23, var(--overlay-opacity)) 0%,
+      rgba(2, 6, 23, calc(var(--overlay-opacity) * 0.6)) 60%,
+      rgba(2, 6, 23, calc(var(--overlay-opacity) * 0.3)) 100%);
+  z-index: 1;
+  backdrop-filter: blur(calc(var(--blur-intensity) * 0.25));
+}
+
+
+
+
+/* ===============================
+   ☀️ ECLAIRAGE ORANGE DIFFUS
+================================ */
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 25%, rgba(249, 115, 22, calc(var(--orange-intensity) * 0.7)), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, calc(var(--blue-intensity) * 0.55)), transparent 50%);
+  filter: blur(80px);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+
+
+
+/* ===============================
+   💫 CURSEUR LUMINEUX
+================================ */
+.cursor-glow {
+  pointer-events: none;
+  background: radial-gradient(circle at center,
+      rgba(249, 115, 22, var(--orange-glow-opacity)),
+      rgba(249, 115, 22, calc(var(--orange-glow-opacity) * 0.3)) 50%,
+      transparent 70%);
+  filter: blur(12px);
+}
+
+
+/* ===============================
+   🌈 TITRE / TEXTES AVEC FOND
+================================ */
+
+/* Gradient Délicat — doré, rose, violet, bleu */
+.title-gradient {
+  display: inline-block;
+  background: linear-gradient(135deg,
+      #fbbf24 0%,
+      #f38c42 25%,
+      #f0eeec 50%,
+      #f38c42 75%,
+      #fbbf24 100%);
+  background-size: 250% 250%;
+  animation: gradient-shift 10s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  font-weight: 700;
+}
+
+/* Fond flou et semi-transparent pour lisibilité sur image */
+.text-glass-bg {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  display: inline-block;
+}
+
+
+
+
+/* ===============================
+   🔘 BOUTONS PREMIUM
+================================ */
+.btn-primary-orange {
+  background: linear-gradient(135deg, #facc15, #f97316);
+  color: white;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+  border-radius: 8px;
+  padding: 0.75rem 1.75rem;
+  transition: var(--transition-base);
+}
+
+.btn-primary-orange:hover {
+  background: linear-gradient(135deg, #facc15, #f97316);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 35px rgba(249, 115, 22, 0.7);
+}
+
+.btn-outline-orange {
+
+  
+  color: #f97316;
+  font-weight: 600;
+  backdrop-filter: blur(15px);
+  border-radius: 8px;
+  padding: 0.75rem 1.75rem;
+  transition: var(--transition-base);
+}
+
+.btn-outline-orange:hover {
+  background: rgba(249, 115, 22, 0.15);
+  color: white;
+  border-color: rgba(249, 115, 22, 0.8);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+}
+
+
+
+
+/* ===============================
+   🏷️ BADGES REVISITÉS
+================================ */
+.badges-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1.2rem 2rem;
+  box-shadow: var(--soft-shadow);
+  transition: var(--transition-base);
+  min-width: 250px;
+  max-width: 350px;
+}
+
+.badge-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(249, 115, 22, 0.5);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25);
+}
+
+.badge-item:nth-child(1) {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+.badge-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+
+
+
+/* ===============================
+   🎬 ANIMATIONS
+================================ */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-particle {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
+  25% { transform: translate(10px, -15px) rotate(90deg); opacity: 0.4; }
+  50% { transform: translate(5px, -30px) rotate(180deg); opacity: 0.2; }
+  75% { transform: translate(-5px, -20px) rotate(270deg); opacity: 0.4; }
+}
+
+
+
+
+/* ===============================
+   📱 RESPONSIVE DESIGN
+================================ */
+@media (max-width: 1024px) {
+  .hero-bg { --blur-intensity: 15px; --image-blur: 8px; }
+}
+
+@media (max-width: 768px) {
+  .hero-bg {
+    padding-top: 100px;
+    padding-bottom: 40px;
+    --blur-intensity: 12px;
+    --image-blur: 6px;
+    --image-brightness: 0.45;
+  }
+  .badges-container { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 640px) {
+  .hero-bg {
+    padding-top: 90px;
+    padding-bottom: 30px;
+    --blur-intensity: 10px;
+    --image-blur: 5px;
+    --image-brightness: 0.35;
+  }
+  .badge-item {
+    width: 100%;
+    padding: 1rem 1.5rem;
+  }
+}
+
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+/* ===============================
+   🌫️ CADRE INVISIBLE ET FLUO SOUS LOGO
+================================ */
+.logo-transparent {
+  background: transparent;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Effet de disparition progressive sous le logo */
+.logo-transparent::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140%;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 1) 0%,    /* fondu complet sous le logo */
+    rgba(2, 6, 23, 0.6) 40%,
+    rgba(2, 6, 23, 0.2) 70%,
+    transparent 100%
+  );
+  filter: blur(25px);
+  border-radius: 50%;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===============================
+   💠 CADRE & CARROUSEL AVEC GSAP
+================================ */
+.logo-glass-blur {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.4),
+    inset 0 0 30px rgba(59, 130, 246, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-gsap img {
+  transition: opacity 1.2s ease-in-out;
+  will-change: opacity;
+}
