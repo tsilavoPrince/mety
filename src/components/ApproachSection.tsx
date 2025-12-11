@@ -104,7 +104,7 @@ const ServicesSection = () => {
                 <TiltCard>
                   <div className="bg-slate-900/85 backdrop-blur-xl p-8 rounded-2xl border border-slate-700/80 hover:border-orange-500 hover:shadow-[0_24px_70px_rgba(249,115,22,0.55)] transition-all duration-300 animate-fadeIn delay-100">
                     <img
-                      src="../../public/images/approche.avif"
+                      src="/images/approche.avif"
                       alt="Approche sur mesure"
                       className="service-image"
                     />
@@ -125,7 +125,7 @@ const ServicesSection = () => {
                 <TiltCard>
                   <div className="bg-slate-900/85 backdrop-blur-xl p-8 rounded-2xl border border-slate-700/80 hover:border-orange-500 hover:shadow-[0_24px_70px_rgba(249,115,22,0.55)] transition-all duration-300 animate-fadeIn delay-200">
                     <img
-                      src="../../public/images/qualite.jpg"
+                      src="/images/qualite.jpg"
                       alt="Qualité visuelle et technique"
                       className="service-image"
                     />
