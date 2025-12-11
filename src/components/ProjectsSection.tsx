@@ -6,18 +6,45 @@ import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/useScrollAnim
 import "@/styles/animations.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ProjectsModal from "@/components/ProjectsModal"; // ← NOUVEAU IMPORT
+
 
 gsap.registerPlugin(ScrollTrigger);
+
+interface PortfolioItem {
+  image: string;
+  title: string;
+  description: string;
+  objective: string;
+}
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const { elementRef, isVisible } = useScrollAnimation<HTMLDivElement>();
-  const { containerRef, visibleItems } = useStaggeredAnimation<HTMLDivElement>(projects.length, 200);
-
   const sectionRef = useRef<HTMLElement | null>(null);
-  const linesRef = useRef<HTMLDivElement | null>(null);
-  const cardsWrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const portfolioItems: PortfolioItem[] = [
+    {
+      image: "/images/approche.avif",
+      title: "Refonte du site d'une entreprise de services",
+      description: "Site vitrine moderne, prise de contact simplifiée, blog intégré.",
+      objective: "améliorer la crédibilité et générer plus de demandes de devis."
+    },
+    {
+      image: "/images/qualite.jpg",
+      title: "Création de l'identité visuelle d'une marque locale",
+      description: "Logo, charte graphique, supports imprimés et visuels réseaux sociaux.",
+      objective: "uniformiser la communication et monter en gamme."
+    },
+    {
+      image: "/images/connect.png",
+      title: "Plateforme interne + automatisations",
+      description: "Outil web pour gérer les clients, les demandes et les documents.",
+      objective: "réduire la charge manuelle et centraliser l'information."
+    }
+  ];
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -36,202 +63,154 @@ const ProjectsSection = () => {
     loadProjects();
   }, []);
 
+  // Animation d'ouverture/fermeture de la modale
   useEffect(() => {
-  if (!sectionRef.current || projects.length === 0) return;
+    if (!showModal) return;
 
-  const ctx = gsap.context(() => {
-    // Animation globale de la section
-    gsap.from(sectionRef.current, {
-      opacity: 0,
-      scale: 0.95,
-      filter: "blur(10px)",
-      duration: 1.8,
-      ease: "power4.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 85%",
-      },
-    });
+    const tl = gsap.timeline();
+    tl.fromTo("#projects-modal",
+      { scale: 0.7, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
+    );
 
-    
+    return () => {
+      gsap.to("#projects-modal", {
+        scale: 0.7,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in"
+      });
+    };
+  }, [showModal]);
 
-    // ✨ MESMERIZING CARDS EFFECTS ✨
-   if (cardsWrapperRef.current) {
-  const cards = cardsWrapperRef.current.querySelectorAll(".project-card-outer");
-
-  cards.forEach((card, index) => {
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: card,
-        start: "top 90%",
-        end: "bottom 30%",
-        scrub: 1.2,
-        toggleActions: "play pause resume reset",
-      }
-    })
-    // Phase 1: flottement TRÈS LENT d'abord (card déjà visible)
-    .to(card, {
-      y: -25,
-      scale: 1,
-      rotation: index % 2 === 0 ? 2 : -2,
-      ease: "power2.inOut",
-      duration: 6,        // flottement très lent
-      repeat: 3,          // répète plusieurs fois
-      yoyo: true
-    }, 0)
-    
-    // Phase 2: glow pendant le flottement
-    .to(card, {
-      scale: 1.04,
-      duration: 4,
-      ease: "power2.out"
-    }, 0.5)
-    
-    // Phase 3: APPARITION LENTE (arrive APRÈS flottement)
-    .fromTo(
-      card,
-      {
-        opacity: 0.3,
-        y: 80,
-        scale: 0.85,
-        rotationX: 45,
-        rotationY: index % 2 === 0 ? -15 : 15,
-        filter: "brightness(0.4) blur(6px)"
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1.02,
-        rotationX: 0,
-        rotationY: 0,
-        filter: "brightness(1.1) blur(0px)",
-        duration: 2.5,      // apparition lente
-        ease: "power4.out"
-      },
-      3.5          // ← DÉCALAGE : apparition commence APRÈS 3.5s de flottement
-    )
-    
-    // Phase 4: stabilisation finale
-    .to(card, {
-      y: 0,
-      rotation: 0,
-      scale: 1,
-      boxShadow: "0 24px 80px rgba(15,23,42,0.9)",
-      duration: 2,
-      ease: "elastic.out(1, 0.3)"
-    }, 7);          // stabilisation très en fin de timeline
-  });
-}
-
-
-  }, sectionRef);
-
-  return () => ctx.revert();
-}, [projects.length]);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
-    <section
-      ref={(el) => {
-        sectionRef.current = el;
-        if (typeof elementRef === "function") elementRef(el);
-        else if (elementRef)
-          (elementRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-      }}
-      id="realisations"
-      className="py-24 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-950 relative overflow-hidden"
-    >
-      {/* Fond lumineux subtil */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[26rem] h-[26rem] bg-orange-400/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-64 h-64 bg-orange-300/15 rounded-full blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.1),transparent_60%),radial-gradient(circle_at_bottom,_rgba(15,23,42,0.95),_#0f172a)] mix-blend-soft-light opacity-60" />
-      </div>
-
-      {/* Ligne décorative */}
-      <div
-        ref={linesRef}
-        className="pointer-events-none absolute inset-x-0 top-56 bottom-10 flex items-center justify-center opacity-25"
+    <>
+      <section
+        ref={(el) => {
+          sectionRef.current = el;
+          if (typeof elementRef === "function") elementRef(el);
+        }}
+        id="realisations"
+        className="py-20 bg-gradient-to-b from-slate-900 to-gray-900"
       >
-        <div className="relative w-[120%] max-w-6xl h-56">
-          <div className="absolute inset-y-6 left-1/2 -translate-x-1/2 w-full">
-            <div className="w-full h-full bg-[repeating-linear-gradient(135deg,_rgba(255,255,255,0.05)_0px,_rgba(255,255,255,0.05)_12px,_rgba(249,115,22,0.08)_12px,_rgba(249,115,22,0.08)_24px)] rounded-3xl border border-orange-300/30 shadow-[0_0_80px_rgba(249,115,22,0.3)] backdrop-blur-md" />
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 max-w-4xl mx-auto transform transition-all duration-700 ${
-            isVisible ? "animate-fade-in-down" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <span className="inline-flex items-center px-4 py-1 mb-4 rounded-full border border-orange-400/40 bg-orange-500/10 text-xs font-medium uppercase tracking-[0.2em] text-orange-200">
-            Portefeuille
-          </span>
-
-          <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-200 to-orange-400 mb-6 drop-shadow-[0_0_40px_rgba(249,115,22,0.3)]">
-            NOS RÉALISATIONS
-          </h2>
-
-          <p className="text-lg md:text-xl text-gray-300/90 leading-relaxed bg-gray-800/50 backdrop-blur-md px-8 py-4 rounded-2xl border border-orange-400/20 shadow-md">
-            Laissez-vous inspirer par ces histoires de transformation digitale réussie.
-            Chaque projet reflète notre engagement à comprendre les enjeux spécifiques
-            de chaque secteur et à concevoir des solutions sur mesure.
-          </p>
-        </div>
-
-        {/* Loader / Carte */}
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="relative mb-4">
-              <div className="w-20 h-20 rounded-full border-t-4 border-b-4 border-orange-400 bg-orange-300/20 animate-spin shadow-lg shadow-orange-400/20" />
-            </div>
-            <span className="text-orange-300 text-lg font-medium uppercase tracking-[0.25em]">
-              Chargement des projets...
-            </span>
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4 animate-bounce">🚧</div>
-            <h3 className="text-2xl font-bold text-gray-100 mb-2">
-              Aucun projet publié
-            </h3>
-            <p className="text-gray-400 bg-gray-800/40 px-8 py-4 rounded-xl border border-orange-400/20">
-              Les projets créés dans le dashboard admin avec le statut "Terminé" apparaitront ici.
+        <div className="container mx-auto px-6 max-w-6xl">
+          {/* TITRE PRINCIPAL */}
+          <div className="text-center mb-16">
+            <h2 className="section-title text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent mb-6">
+              Nos réalisations
+            </h2>
+            <p className="section-subtitle text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              Quelques projets que nous avons accompagnés, de la réflexion à la mise en ligne.
             </p>
           </div>
-        ) : (
-          <div
-            ref={(el) => {
-              containerRef.current = el as HTMLDivElement | null;
-              cardsWrapperRef.current = el as HTMLDivElement | null;
-            }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto"
-          >
-            {projects.map((project, index) => (
-              <div
-                key={`${project.title}-${index}`}
-                className={`project-card-outer group transform transition-all duration-500 ${
-                  visibleItems.has(index) ? "animate-fade-in-up" : ""
-                } overflow-hidden relative`}
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="h-full rounded-3xl bg-gradient-to-br from-gray-800/60 to-slate-900/50 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_80px_rgba(249,115,22,0.4)] transition-all duration-500 group-hover:scale-[1.02] border border-orange-400/25 hover:border-orange-300/40 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-orange-400/5 via-transparent to-orange-400/5" />
-                  <div className="h-full flex flex-col relative z-10">
-                    <div className="p-6 lg:p-8 h-full flex flex-col">
-                      <ProjectCard {...project} />
-                    </div>
-                  </div>
+
+          {/* GRID 3 PROJETS */}
+          <div className="portfolio-grid mb-16">
+            {portfolioItems.map((item, index) => (
+              <div key={`preview-${index}`} className="portfolio-item">
+                <div className="portfolio-image">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+
+                </div>
+
+
+                <div className="portfolio-content">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <p><strong>Objectif :</strong> {item.objective}</p>
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </div>
-    </section>
+
+          {/* BOUTON MODALE */}
+          <div className="text-center">
+            <button
+              onClick={() => setShowModal(true)}
+              className="btn btn-primary inline-flex items-center gap-2 px-8 py-4  hover:bg-white-300 text-orange-500 font-bold text-lg rounded-xl shadow-xl hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-1 border border-orange-400/50"
+            >
+              Voir toutes nos réalisations
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* NOUVELLE MODALE SÉPARÉE - SANS TITRE, 2 COLONNES MAX */}
+      {showModal && (
+        <ProjectsModal onClose={closeModal} />
+      )}
+
+      <style jsx>{`
+        .portfolio-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin-top: 3rem;
+        }
+        .portfolio-item {
+          background: rgba(185, 87, 31, 0.95);
+          border-radius: 15px;
+          overflow: hidden;
+          transition: transform 0.3s ease;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+          cursor: pointer;
+        }
+        .portfolio-item:hover {
+          transform: scale(1.05);
+          box-shadow: 0 20px 50px rgba(251, 146, 60, 0.3);
+        }
+        .portfolio-image {
+          height: 200px;
+          background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 3rem;
+          color: white;
+        }
+        .portfolio-content {
+          padding: 1.5rem;
+          background: rgba(54, 52, 52, 0.95);
+        }
+        .portfolio-content h3 {
+          color: #f97316;
+          margin-bottom: 0.5rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          line-height: 1.4;
+        }
+        .portfolio-content p {
+          color: #a7a2a2ff;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          margin-bottom: 0.25rem;
+        }
+        .portfolio-content p:last-child {
+          font-weight: 600;
+          color: #eaeaebff;
+        }
+
+        @media (max-width: 768px) {
+          .portfolio-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+          .portfolio-image {
+            height: 160px;
+            font-size: 2.5rem;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 
