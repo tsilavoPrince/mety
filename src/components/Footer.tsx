@@ -33,7 +33,7 @@ const Footer = () => {
                 <div>
                   <h3 className="text-2xl font-extrabold tracking-tight">ARIA</h3>
                   <p className="text-xs uppercase tracking-[0.25em] text-orange-300/80">
-                    Agences digitales
+                    Agence digitale
                   </p>
                 </div>
               </div>
@@ -88,7 +88,7 @@ const Footer = () => {
             {/* Contact Info */}
             <div className="animate-fade-in-up delay-200">
               <h4 className="text-lg font-semibold mb-4 text-orange-400">
-                Contact
+                Nos Contacts
               </h4>
               <div className="space-y-4 text-white/80 text-sm">
                 <div className="group">
