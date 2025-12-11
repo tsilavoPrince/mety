@@ -98,31 +98,26 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
       value: "Site web / E-commerce", 
       label: "Site web / E-commerce",
       icon: <Globe className="w-4 h-4" />,
-      description: "Création de sites web et boutiques en ligne"
     },
     { 
       value: "Application mobile", 
       label: "Application mobile",
       icon: <Smartphone className="w-4 h-4" />,
-      description: "Développement d'applications iOS et Android"
     },
     { 
       value: "Design UI/UX", 
       label: "Design UI/UX",
       icon: <Palette className="w-4 h-4" />,
-      description: "Design d'interfaces et expérience utilisateur"
     },
     { 
       value: "Marketing digital", 
       label: "Marketing digital",
       icon: <TrendingUp className="w-4 h-4" />,
-      description: "Stratégies de marketing en ligne"
     },
     { 
       value: "Autre projet", 
       label: "Autre",
       icon: <Code className="w-4 h-4" />,
-      description: "Autres projets sur mesure"
     },
   ];
 
@@ -321,7 +316,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
           left: 50%;
           transform: translateX(-50%);
           width: 320px;
-          background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+          background: linear-gradient(145deg, rgba(14, 13, 13, 0.3), rgba(30, 41, 59, 0.95));
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(249, 115, 22, 0.3);
