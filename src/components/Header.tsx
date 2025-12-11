@@ -37,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedService, setSelectedService] = useState<SelectedService | null>(null);
+  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
 
   // Gérer le clic en dehors du dropdown
   useEffect(() => {
@@ -97,31 +98,31 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
       value: "Site web / E-commerce", 
       label: "Site web / E-commerce",
       icon: <Globe className="w-4 h-4" />,
-     
+      description: "Création de sites web et boutiques en ligne"
     },
     { 
       value: "Application mobile", 
       label: "Application mobile",
       icon: <Smartphone className="w-4 h-4" />,
-   
+      description: "Développement d'applications iOS et Android"
     },
     { 
       value: "Design UI/UX", 
       label: "Design UI/UX",
       icon: <Palette className="w-4 h-4" />,
-    
+      description: "Design d'interfaces et expérience utilisateur"
     },
     { 
       value: "Marketing digital", 
       label: "Marketing digital",
       icon: <TrendingUp className="w-4 h-4" />,
-    
+      description: "Stratégies de marketing en ligne"
     },
     { 
       value: "Autre projet", 
       label: "Autre",
       icon: <Code className="w-4 h-4" />,
-     
+      description: "Autres projets sur mesure"
     },
   ];
 
@@ -171,6 +172,30 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  // Gestion du hover pour le dropdown
+  const handleMouseEnter = () => {
+    setServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      if (!isHoveringDropdown) {
+        setServicesDropdownOpen(false);
+      }
+    }, 200);
+  };
+
+  const handleDropdownMouseEnter = () => {
+    setIsHoveringDropdown(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    setIsHoveringDropdown(false);
+    setTimeout(() => {
+      setServicesDropdownOpen(false);
+    }, 150);
   };
 
   return (
@@ -731,8 +756,13 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 </a>
               ))}
 
-              {/* Services Dropdown */}
-              <div className="relative" ref={dropdownRef}>
+              {/* Services Dropdown - Version hover */}
+              <div 
+                className="relative" 
+                ref={dropdownRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
                 <button
                   className={`nav-item relative px-4 py-3 rounded-xl transition-all duration-300 text-sm font-medium group flex items-center gap-2 ${
                     activeSection === "services" || servicesDropdownOpen
@@ -741,24 +771,21 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                       ? "text-gray-200 hover:text-orange-400"
                       : "text-white/95 hover:text-orange-400"
                   }`}
-                  onMouseEnter={() => setServicesDropdownOpen(true)}
-                  onMouseLeave={() => !servicesDropdownOpen && setHoveredItem(null)}
                   onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
                   style={{ animationDelay: "300ms" }}
                 >
                   <span className="flex items-center space-x-2 relative z-10">
-                    <span className="text-xs group-hover:animate-bounce">
-                    </span>
                     <span>Nos Services</span>
                     <ChevronDown className={`w-4 h-4 dropdown-arrow ${servicesDropdownOpen ? "open" : ""}`} />
                   </span>
-                  {hoveredItem === "#services" && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/25 to-orange-600/25 rounded-xl backdrop-blur-md" />
-                  )}
                 </button>
 
                 {/* Dropdown Menu */}
-                <div className={`services-dropdown ${servicesDropdownOpen ? "open" : ""}`}>
+                <div 
+                  className={`services-dropdown ${servicesDropdownOpen ? "open" : ""}`}
+                  onMouseEnter={handleDropdownMouseEnter}
+                  onMouseLeave={handleDropdownMouseLeave}
+                >
                   {serviceOptions.map((option) => (
                     <button
                       key={option.value}
@@ -806,8 +833,6 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
             <div className="hidden lg:block relative">
               <div className="absolute inset-0 w-[240px] h-[100px]">
                 {/* ❄️ 20 FLAKES ULTRA DENSE */}
-                <div className="snowflake"></div>
-                <div className="snowflake"></div>
                 <div className="snowflake"></div>
                 <div className="snowflake"></div>
                 <div className="snowflake"></div>
