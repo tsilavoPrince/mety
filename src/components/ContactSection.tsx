@@ -47,6 +47,7 @@ const CTASection: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   // Animation d’apparition des champs
   useEffect(() => {
@@ -59,7 +60,7 @@ const CTASection: React.FC = () => {
   return (
     <section className="cta-section bg-gradient-to-br from-black-700 to-gray-400 text-white text-center py-20 px-4" id="contact">
       <div className="container mx-auto max-w-4xl">
-  <h1 className="text-4xl font-extrabold mb-4 bg-gradient-to-r from-orange-400 to-yellow-400 text-transparent bg-clip-text">
+  <h1 className="text-4xl font-extrabold mb-4 bg-gradient-to-r from-orange-200 to-yellow-300 text-transparent bg-clip-text">
     Prêt à lancer votre projet ?
   </h1>
 
@@ -70,7 +71,7 @@ const CTASection: React.FC = () => {
   <div className="flex justify-center gap-4">
     <button
       onClick={() => setIsModalOpen(true)}
-      className="btn btn-primary bg-gradient-to-r from-orange-500 to-yellow-400 text-black font-semibold px-6 py-3 rounded-full hover:from-yellow-400 hover:to-orange-500 hover:text-black transition transform hover:scale-[1.03]"
+      className="btn btn-primary bg-gradient-to-r from-orange-500 to-yellow-300 text-black font-semibold px-6 py-3 rounded-full hover:from-yellow-400 hover:to-orange-500 hover:text-black transition transform hover:scale-[1.03]"
     >
       Demander un devis
     </button>
