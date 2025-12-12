@@ -50,7 +50,7 @@ const Footer = () => {
                     <img
                       src="/images/aria-logo.png"
                       alt="ARIA Logo"
-                      className="h-11 w-11"
+                      className="h-11 w-20"
                     />
                   </div>
                 </div>

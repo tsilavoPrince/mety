@@ -104,10 +104,10 @@ const CTASection: React.FC = () => {
       `}</style>
 
       <section 
-        className="cta-section relative bg-gradient-to-br from-black/90 to-black-900/70 text-white text-center py-20 px-4"
+        className="cta-section relative bg-gradient-to-br from-gray/90 to-gray-900/70 text-white text-center py-20 px-4"
         id="contact"
         style={{ 
-          backgroundImage: "url('/images/cover.jpg')",
+          backgroundImage: "url('/images/baobab1.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -120,7 +120,7 @@ const CTASection: React.FC = () => {
         </div>
 
         {/* Overlay blur */}
-        <div className="pointer-events-none absolute inset-0 bg-black/80 backdrop-blur-lg z-5" />
+        <div className="pointer-events-none absolute inset-0 bg-black/60 backdrop-blur z-5" />
         
         <div className="container mx-auto max-w-4xl relative z-10">
           <h1 className="text-4xl font-extrabold mb-4 bg-gradient-to-r from-orange-200 to-yellow-300 text-transparent bg-clip-text">
