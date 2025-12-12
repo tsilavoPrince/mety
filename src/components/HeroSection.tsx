@@ -256,7 +256,6 @@ const HeroSection = () => {
                drop-shadow-[0_6px_20px_rgba(0,0,0,0.6)] 
                hover:scale-110 transition-transform duration-500"
                 />
-                <div className="aria-line mt-2 w-24 h-[2px] bg-gradient-to-r from-orange-500 via-blue-500 to-transparent rounded-full"></div>
               </div>
 
               {/* Cadre avec effet de fusion */}
@@ -387,7 +386,7 @@ const HeroSection = () => {
                 <span className="badge-text">
                   Basé à Madagascar
                   <br />
-                  <span className="text-sm opacity-80">
+                  <span className="text-sm opacity-80 block mt-1">
                     clients partout dans le monde
                   </span>
                 </span>
