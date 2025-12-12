@@ -14,9 +14,10 @@ import {
   Smartphone,
   Palette,
   TrendingUp,
-  Code
+  Code,
 } from "lucide-react";
 import "@/styles/animations.css";
+import "@/styles/Header.css";
 
 // Type pour les données du service sélectionné
 interface SelectedService {
@@ -36,13 +37,17 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedService, setSelectedService] = useState<SelectedService | null>(null);
+  const [selectedService, setSelectedService] =
+    useState<SelectedService | null>(null);
   const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
 
   // Gérer le clic en dehors du dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setServicesDropdownOpen(false);
       }
     };
@@ -88,46 +93,51 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
   const mobileIcons = [
     { id: "accueil", href: "#accueil", icon: Home, label: "Accueil" },
     { id: "about", href: "#about", icon: User, label: "À Propos" },
-    { id: "realisations", href: "#realisations", icon: Image, label: "Réalisation" },
+    {
+      id: "realisations",
+      href: "#realisations",
+      icon: Image,
+      label: "Réalisation",
+    },
     { id: "services", href: "#services", icon: Settings, label: "Services" },
     { id: "contact", href: "#contact", icon: Mail, label: "Contact" },
   ];
-
-
 
   const handleServiceClick = (service: string, label: string) => {
     // Créer l'objet service sélectionné
     const selectedServiceData = { type: service, label };
     setSelectedService(selectedServiceData);
-    
+
     // Notifier le parent (App) du service sélectionné
     if (onServiceSelect) {
       onServiceSelect(selectedServiceData);
     }
-    
+
     // Fermer le dropdown
     setServicesDropdownOpen(false);
-    
+
     // Scroll vers la section contact
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
-      
+
       // Ajouter un petit délai pour s'assurer que la section est visible
       setTimeout(() => {
         // Mettre le focus sur le champ message ou le premier champ
-        const messageField = document.querySelector('#contact textarea[name="message"]') as HTMLTextAreaElement;
+        const messageField = document.querySelector(
+          '#contact textarea[name="message"]'
+        ) as HTMLTextAreaElement;
         if (messageField) {
           messageField.focus();
-          
+
           // Pré-remplir le champ message avec le service sélectionné
           const currentValue = messageField.value;
           if (!currentValue.includes(service)) {
-            const prefix = currentValue ? `${currentValue}\n\n` : '';
+            const prefix = currentValue ? `${currentValue}\n\n` : "";
             messageField.value = `${prefix}Service intéressé : ${service}`;
-            
+
             // Déclencher l'événement change pour mettre à jour l'état
-            const event = new Event('input', { bubbles: true });
+            const event = new Event("input", { bubbles: true });
             messageField.dispatchEvent(event);
           }
         }
@@ -169,493 +179,6 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
 
   return (
     <>
-      <style>{`
-        @keyframes logoSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 5px rgba(255, 107, 53, 0.3); }
-          50% { box-shadow: 0 0 20px rgba(255, 107, 53, 0.6), 0 0 30px rgba(255, 107, 53, 0.4); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-3px); }
-        }
-        @keyframes slideIn {
-          0% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes progressShine {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-
-        /* BOUTON CTA PREMIUM */
-        @keyframes ctaPulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(249, 115, 22, 0.5); }
-          50% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.8), 0 0 60px rgba(249, 115, 22, 0.4); }
-        }
-        @keyframes ctaRipple {
-          0% { transform: scale(0); opacity: 1; }
-          100% { transform: scale(4); opacity: 0; }
-        }
-
-        /* ❄️ NEIGE ULTRA DENSE + PLUS VISIBLE (20 flakes, opacity 0.95) */
-        @keyframes snowfall {
-          0% {
-            transform: translateY(-120%) translateX(0px) rotate(0deg);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(150%) translateX(25px) rotate(720deg);
-            opacity: 0;
-          }
-        }
-
-        /* ❄️ DÉPÔT DE NEIGE RÉALISTE SUR LE BOUTON CTA */
-        @keyframes snowDrift {
-          0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.95; }
-          33% { transform: translateY(0.5px) translateX(0.5px); opacity: 0.92; }
-          66% { transform: translateY(0.3px) translateX(-0.3px); opacity: 0.93; }
-        }
-
-        @keyframes snowSettle {
-          0% { 
-            transform: translateY(-2px) scale(0.95); 
-            opacity: 0; 
-          }
-          100% { 
-            transform: translateY(0px) scale(1); 
-            opacity: 1; 
-          }
-        }
-
-        /* MOBILE ICONS - SEULE L'ICÔNE ACTIVE EST VISIBLE */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .mobile-icons-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          width: 60px;
-          height: 60px;
-        }
-
-        .mobile-icon-wrapper {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .mobile-icon-wrapper:not(.active) {
-          opacity: 0;
-          visibility: hidden;
-          transform: scale(0.5);
-        }
-
-        .mobile-icon-wrapper.active {
-          opacity: 1;
-          visibility: visible;
-          transform: scale(1);
-          animation: fadeIn 0.4s ease-out;
-        }
-
-        /* SERVICES DROPDOWN STYLES */
-        .services-dropdown {
-          position: absolute;
-          top: calc(100% + 10px);
-          left: 50%;
-          transform: translateX(-50%);
-          width: 320px;
-          background: linear-gradient(145deg, rgba(14, 13, 13, 0.3), rgba(30, 41, 59, 0.95));
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(249, 115, 22, 0.3);
-          border-radius: 16px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
-          opacity: 0;
-          visibility: hidden;
-          transform: translateX(-50%) translateY(-10px);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 1000;
-          overflow: hidden;
-        }
-
-        .services-dropdown.open {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(-50%) translateY(0);
-        }
-
-        .services-dropdown::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.1), transparent 70%);
-          z-index: -1;
-        }
-
-        .service-option {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 14px 16px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          cursor: pointer;
-          transition: all 0.2s ease;
-          background: transparent;
-          border: none;
-          width: 100%;
-          text-align: left;
-          color: rgba(255, 255, 255, 0.9);
-        }
-
-        .service-option:last-child {
-          border-bottom: none;
-        }
-
-        .service-option:hover {
-          background: rgba(249, 115, 22, 0.1);
-          color: rgba(255, 255, 255, 1);
-          padding-left: 20px;
-        }
-
-        .service-option:hover .service-icon {
-          transform: scale(1.1);
-          color: #f97316;
-        }
-
-        .service-option:hover .service-description {
-          opacity: 1;
-        }
-
-        .service-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 36px;
-          height: 36px;
-          background: rgba(249, 115, 22, 0.1);
-          border-radius: 10px;
-          color: rgba(255, 255, 255, 0.7);
-          transition: all 0.2s ease;
-          flex-shrink: 0;
-        }
-
-        .service-content {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .service-label {
-          font-weight: 500;
-          font-size: 0.9rem;
-          margin-bottom: 4px;
-          transition: color 0.2s ease;
-        }
-
-        .service-description {
-          font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.5);
-          opacity: 0.7;
-          transition: opacity 0.2s ease;
-          line-height: 1.3;
-        }
-
-        .dropdown-arrow {
-          transition: transform 0.3s ease;
-        }
-
-        .dropdown-arrow.open {
-          transform: rotate(180deg);
-        }
-
-        .cta-premium {
-          position: relative;
-          background: linear-gradient(145deg, #f97316, #fb923c);
-          border: none;
-          border-radius: 50px;
-          font-weight: 700;
-          font-size: 0.95rem;
-          padding: 1rem 2.5rem;
-          color: white !important;
-          text-decoration: none;
-          overflow: hidden;
-          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-style: preserve-3d;
-          box-shadow: 
-            0 10px 30px rgba(249, 115, 22, 0.4),
-            0 4px 15px rgba(0, 0, 0, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3);
-          z-index: 10;
-        }
-
-        /* ❄️ GROS DÉPÔT PRINCIPAL */
-        .cta-premium::before {
-          content: '';
-          position: absolute;
-          top: -18px;          /* encore un peu plus haut */
-          left: -5%;           /* déborde légèrement sur les côtés */
-          width: 110%;         /* dépasse le bouton */
-          height: 22px;        /* dépôt bien épais */
-          background:
-            radial-gradient(ellipse 100% 80% at 15% 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0.95) 70%, transparent 88%),
-            radial-gradient(ellipse 95% 75% at 55% 5%, rgba(255,255,255,1) 35%, rgba(255,255,255,0.92) 68%, transparent 85%),
-            radial-gradient(ellipse 85% 70% at 85% 8%, rgba(255,255,255,0.99) 30%, rgba(255,255,255,0.9) 62%, transparent 82%);
-          border-radius: 16px 16px 8px 8px;
-          filter: blur(0.3px) brightness(1.1);
-          opacity: 1;
-          pointer-events: none;
-          z-index: 12;
-          animation: snowDrift 6s ease-in-out infinite;
-        }
-
-        /* ❄️ COUCHE SUPPLÉMENTAIRE (EFFET TAS DE NEIGE) */
-        .cta-premium::after {
-          content: '';
-          position: absolute;
-          top: -10px;
-          left: -3%;
-          width: 106%;
-          height: 16px;
-          background:
-            radial-gradient(12px 12px at 12% 30%, #fff 75%, transparent 85%),
-            radial-gradient(10px 10px at 35% 20%, #fff 80%, transparent 88%),
-            radial-gradient(9px 9px at 60% 25%, #fff 80%, transparent 88%),
-            radial-gradient(11px 11px at 80% 35%, #fff 78%, transparent 88%),
-            radial-gradient(8px 8px at 50% 55%, #fff 75%, transparent 88%);
-          border-radius: 50%;
-          filter: blur(0.2px);
-          opacity: 1;
-          pointer-events: none;
-          z-index: 13;
-          animation: snowDrift 7s ease-in-out infinite reverse;
-        }
-
-        /* La neige suit légèrement le hover */
-        .cta-premium:hover::before {
-          transform: translateY(-1px);
-          filter: blur(1.5px) brightness(1.05);
-        }
-
-        .cta-premium:active {
-          transform: translateY(-2px) scale(1.02);
-        }
-
-        .cta-premium > div {
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-          transition: left 0.7s;
-        }
-
-        .cta-premium:hover > div {
-          left: 100%;
-        }
-
-        /* ❄️ 20 FLAKES ULTRA DENSE + PLUS VISIBLES */
-        .snowflake {
-          position: absolute;
-          background: rgba(255, 255, 255, 0.95);
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 5;
-          box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-        }
-        .snowflake:nth-child(1) { width: 3px; height: 3px; animation: snowfall 3.2s linear infinite; left: 2%; animation-delay: 0s; }
-        .snowflake:nth-child(2) { width: 5px; height: 5px; animation: snowfall 4.1s linear infinite; left: 12%; animation-delay: 0.5s; }
-        .snowflake:nth-child(3) { width: 4px; height: 4px; animation: snowfall 3.8s linear infinite; left: 22%; animation-delay: 1.0s; }
-        .snowflake:nth-child(4) { width: 6px; height: 6px; animation: snowfall 4.8s linear infinite; left: 32%; animation-delay: 1.5s; }
-        .snowflake:nth-child(5) { width: 2px; height: 2px; animation: snowfall 2.9s linear infinite; left: 42%; animation-delay: 2.0s; }
-        .snowflake:nth-child(6) { width: 7px; height: 7px; animation: snowfall 5.3s linear infinite; left: 52%; animation-delay: 0.2s; }
-        .snowflake:nth-child(7) { width: 4px; height: 4px; animation: snowfall 4.0s linear infinite; left: 62%; animation-delay: 2.5s; }
-        .snowflake:nth-child(8) { width: 5px; height: 5px; animation: snowfall 3.6s linear infinite; left: 72%; animation-delay: 0.8s; }
-        .snowflake:nth-child(9) { width: 3px; height: 3px; animation: snowfall 4.4s linear infinite; left: 82%; animation-delay: 1.8s; }
-        .snowflake:nth-child(10) { width: 6px; height: 6px; animation: snowfall 5.0s linear infinite; left: 92%; animation-delay: 2.2s; }
-        .snowflake:nth-child(11) { width: 4px; height: 4px; animation: snowfall 3.5s linear infinite; left: 8%; animation-delay: 0.3s; }
-        .snowflake:nth-child(12) { width: 5px; height: 5px; animation: snowfall 4.7s linear infinite; left: 18%; animation-delay: 1.2s; }
-        .snowflake:nth-child(13) { width: 2px; height: 2px; animation: snowfall 3.1s linear infinite; left: 28%; animation-delay: 2.7s; }
-        .snowflake:nth-child(14) { width: 7px; height: 7px; animation: snowfall 5.6s linear infinite; left: 38%; animation-delay: 0.7s; }
-        .snowflake:nth-child(15) { width: 3px; height: 3px; animation: snowfall 4.2s linear infinite; left: 48%; animation-delay: 1.9s; }
-        .snowflake:nth-child(16) { width: 6px; height: 6px; animation: snowfall 4.9s linear infinite; left: 58%; animation-delay: 2.4s; }
-        .snowflake:nth-child(17) { width: 4px; height: 4px; animation: snowfall 3.7s linear infinite; left: 68%; animation-delay: 0.4s; }
-        .snowflake:nth-child(18) { width: 5px; height: 5px; animation: snowfall 5.1s linear infinite; left: 78%; animation-delay: 1.6s; }
-        .snowflake:nth-child(19) { width: 3px; height: 3px; animation: snowfall 3.9s linear infinite; left: 88%; animation-delay: 2.1s; }
-        .snowflake:nth-child(20) { width: 6px; height: 6px; animation: snowfall 4.6s linear infinite; left: 98%; animation-delay: 0.9s; }
-
-        /* Reste des styles identiques */
-        .animate-logo-spin { animation: logoSpin 0.8s ease-out; }
-        .animate-glow { animation: glow 2s ease-in-out infinite; }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-
-        .nav-link {
-          position: relative;
-          overflow: hidden;
-        }
-        .nav-link::before {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: linear-gradient(90deg, #ff6b35, #ff8c42);
-          transition: width 0.3s ease;
-        }
-        .nav-link:hover::before,
-        .nav-link.active::before {
-          width: 100%;
-        }
-
-        .nav-item {
-          position: relative;
-          transition: all 0.3s ease;
-        }
-        .nav-item::before {
-          content: '';
-          position: absolute;
-          bottom: -8px;
-          left: 50%;
-          width: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #f97316, #ea580c);
-          transition: all 0.3s ease;
-          transform: translateX(-50%);
-          border-radius: 2px;
-        }
-        .nav-item:hover::before,
-        .nav-item.active::before {
-          width: 100%;
-        }
-        .nav-item::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle at center, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          border-radius: 8px;
-        }
-        .nav-item:hover::after {
-          opacity: 1;
-        }
-
-        .logo-glow {
-          position: relative;
-        }
-        .logo-glow::before {
-          content: '';
-          position: absolute;
-          top: -2px;
-          left: -2px;
-          right: -2px;
-          bottom: -2px;
-          background: linear-gradient(45deg, #f97316, #ea580c, #f97316);
-          border-radius: 50%;
-          opacity: 0;
-          z-index: -1;
-          transition: opacity 0.3s ease;
-          filter: blur(8px);
-        }
-        .logo-glow:hover::before {
-          opacity: 0.6;
-          animation: pulse 2s ease-in-out infinite;
-        }
-
-        .header-always-blur {
-          backdrop-filter: blur(35px) saturate(170%) brightness(102%);
-          -webkit-backdrop-filter: blur(35px) saturate(170%) brightness(102%);
-        }
-        .header-backdrop {
-          backdrop-filter: blur(40px) saturate(180%) brightness(105%);
-          -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(105%);
-          background:
-            radial-gradient(circle at 15% 85%, rgba(249, 115, 22, 0.20), transparent 45%),
-            radial-gradient(circle at 85% 15%, rgba(249, 115, 22, 0.15), transparent 45%),
-            rgba(17, 24, 39, 0.96);
-          border-bottom: 1px solid rgba(249, 115, 22, 0.40);
-        }
-
-        /* ✅ MENU HAMBURGER BLUR AMÉLIORÉ */
-        .mobile-menu {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
-          opacity: 0;
-          backdrop-filter: blur(25px) saturate(160%) brightness(105%);
-          -webkit-backdrop-filter: blur(25px) saturate(160%) brightness(105%);
-          background: rgba(15, 23, 42, 0.75);
-          border-top: 1px solid rgba(249, 115, 22, 0.2);
-        }
-        .mobile-menu.open {
-          max-height: 500px;
-          opacity: 1;
-        }
-        .mobile-menu-item {
-          animation: slideIn 0.4s ease-out forwards;
-        }
-        .mobile-menu-item:nth-child(1) { animation-delay: 0.1s; }
-        .mobile-menu-item:nth-child(2) { animation-delay: 0.2s; }
-        .mobile-menu-item:nth-child(3) { animation-delay: 0.3s; }
-        .mobile-menu-item:nth-child(4) { animation-delay: 0.4s; }
-        .mobile-menu-item:nth-child(5) { animation-delay: 0.5s; }
-        .mobile-menu-button {
-          animation: slideIn 0.4s ease-out forwards;
-          animation-delay: 0.6s;
-        }
-
-        .mobile-icon {
-          width: 60px;
-          height: 60px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          cursor: pointer;
-          padding: 12px;
-          border-radius: 16px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .mobile-icon:hover {
-          transform: scale(1.15) rotate(8deg);
-          filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.5));
-          background: rgba(249, 115, 22, 0.1);
-        }
-        .mobile-icon.active {
-          color: #f97316 !important;
-          background: rgba(249, 115, 22, 0.2);
-          box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
-        }
-      `}</style>
-
       <header
         className={`fixed top-0 w-full z-50 transition-all duration-700 header-always-blur ${
           scrolled
@@ -698,8 +221,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 { href: "#accueil", label: "Accueil", icon: "" },
                 { href: "#about", label: "À Propos", icon: "" },
                 { href: "#realisations", label: "Nos Réalisations", icon: "" },
-                    { href: "#services", label: "Nos Services", icon: "" },
-                      
+                { href: "#services", label: "Nos Services", icon: "" },
               ].map((item, index) => (
                 <a
                   key={item.href}
@@ -727,25 +249,6 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 </a>
               ))}
 
-              {/* Services Dropdown - Version hover */}
-              <div 
-                className="relative" 
-                ref={dropdownRef}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                
-
-                {/* Dropdown Menu */}
-                <div 
-                  className={`services-dropdown ${servicesDropdownOpen ? "open" : ""}`}
-                  onMouseEnter={handleDropdownMouseEnter}
-                  onMouseLeave={handleDropdownMouseLeave}
-                >
-             
-                </div>
-              </div>
-
               {/* Contact */}
               <a
                 href="#contact"
@@ -761,8 +264,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                 style={{ animationDelay: "400ms" }}
               >
                 <span className="flex items-center space-x-2 relative z-10">
-                  <span className="text-xs group-hover:animate-bounce">
-                  </span>
+                  <span className="text-xs group-hover:animate-bounce"></span>
                   <span>Nos Contacts</span>
                 </span>
                 {hoveredItem === "#contact" && (
@@ -803,7 +305,7 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
               >
                 <span className="relative z-10 flex items-center space-x-3 font-bold tracking-wide">
                   <span className="group-hover:translate-x-1 transition-transform duration-500">
-                   Commencer maintenant
+                    Commencer maintenant
                   </span>
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
                 </span>
@@ -814,7 +316,6 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
 
             {/* Icône mobile - SEULE L'ICÔNE ACTIVE EST VISIBLE */}
             <div className="lg:hidden flex items-center space-x-14">
-              
               <button
                 className="relative w-14 h-14 flex flex-col justify-center items-center rounded-2xl transition-all duration-300 hover:bg-orange-500/40 p-3 ml-4 border-2 border-orange-500/50 backdrop-blur-sm shadow-xl"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -865,10 +366,9 @@ const Header: React.FC<HeaderProps> = ({ onServiceSelect }) => {
                       <span className="text-sm font-medium">{item.label}</span>
                     </a>
                   ))}
-                  
+
                   {/* Sous-menu des services pour mobile */}
-            
-                  
+
                   <div className="relative">
                     <div className="absolute inset-0 w-full h-[120px]">
                       {/* ❄️ 20 FLAKES NEIGE MOBILE ULTRA DENSE */}
