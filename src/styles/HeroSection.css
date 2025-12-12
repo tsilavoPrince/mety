@@ -176,46 +176,148 @@
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
 }
-
-/* ===============================
-   🏷️ BADGES REVISITÉS
-================================ */
+/* Badges Container */
 .badges-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.8rem;
+  padding: 1.5rem;
 }
 
+/* Badge Item */
 .badge-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1rem;
-  padding: 1.2rem 2rem;
-  box-shadow: var(--soft-shadow);
-  transition: var(--transition-base);
-  min-width: 250px;
-  max-width: 350px;
+  position: relative;
+  background: linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.08) 0%, 
+              rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.2rem;
+  padding: 1.5rem 2.2rem;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 260px;
+  max-width: 320px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
+/* Effet de brillance subtil */
+.badge-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.badge-item:hover::before {
+  left: 100%;
+}
+
+/* Effet de surbrillance sur hover */
 .badge-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(249, 115, 22, 0.5);
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25);
+  background: linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.12) 0%, 
+              rgba(255, 255, 255, 0.05) 100%);
+  border-color: rgba(249, 115, 22, 0.6);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 
+    0 18px 40px rgba(249, 115, 22, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+/* Effet de pulse subtil */
+@keyframes badge-pulse {
+  0%, 100% { 
+    box-shadow: 
+      0 8px 20px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+  }
+  50% { 
+    box-shadow: 
+      0 8px 25px rgba(249, 115, 22, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+  }
+}
+
+.badge-item {
+  animation: badge-pulse 4s infinite ease-in-out;
+}
+
+/* Icône de validation */
+.badge-item::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(249, 115, 22, 0.4);
+  z-index: 2;
+}
+
+.badge-item:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Badge Content */
+.badge-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Badge Text */
 .badge-text {
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 1rem;
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.98);
+  font-size: 1.05rem;
+  font-weight: 600;
   line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .badges-container {
+    gap: 1.2rem;
+    padding: 1rem;
+  }
+  
+  .badge-item {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 1.2rem 1.5rem;
+  }
+}
 /* ===============================
    🎬 ANIMATIONS
 ================================ */
@@ -244,36 +346,66 @@
 }
 
 /* ===============================
-   🏷️ LOGO PRINCIPAL AU-DESSUS DU CADRE
+   🏷️ LOGO PRINCIPAL AU-DESSUS DU CADRE - ORANGE/JAUNE
 ================================ */
 .aria-logo {
   filter: 
-    drop-shadow(0 8px 24px rgba(249, 115, 22, 0.4))
-    drop-shadow(0 8px 24px rgba(59, 130, 246, 0.4));
+    drop-shadow(0 8px 24px rgba(249, 115, 22, 0.5))
+    drop-shadow(0 8px 24px rgba(251, 191, 36, 0.4));
+  /* Cercle jaune-orange sans contour visible */
   background: radial-gradient(
-    ellipse at center,
+    circle at center,
     rgba(249, 115, 22, 0.2) 0%,
-    rgba(59, 130, 246, 0.15) 50%,
-    transparent 70%
+    rgba(251, 191, 36, 0.15) 40%,
+    transparent 60%
   );
-  padding: 14px;
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 20px;
+  border-radius: 50%;
   position: relative;
   z-index: 40;
+  width: fit-content;
+  height: fit-content;
+  /* Suppression de tout ce qui crée un contour */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
 }
 
-.aria-line {
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(to right, 
-    rgba(249, 115, 22, 0.7), 
-    rgba(59, 130, 246, 0.7), 
-    transparent);
-  border-radius: 2px;
-  margin-top: 8px;
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+/* Effet de lueur diffuse sans contour */
+.aria-logo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(249, 115, 22, 0.25) 0%,
+    rgba(251, 191, 36, 0.2) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  z-index: 0;
+  animation: softGlow 4s ease-in-out infinite;
+  /* Pas de bordure, pas de contour */
+  border: none;
+  box-shadow: none;
+}
+
+@keyframes softGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.aria-logo img {
+  position: relative;
+  z-index: 1;
+  margin: -5px;
 }
 
 /* ===============================
