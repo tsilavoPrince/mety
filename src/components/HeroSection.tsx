@@ -96,22 +96,31 @@ const HeroSection = () => {
       }
 
       // Carrousel GSAP (loop)
-      const images = gsap.utils.toArray<HTMLElement>(".carousel-gsap .carousel-image");
+      const images = gsap.utils.toArray<HTMLElement>(
+        ".carousel-gsap .carousel-image"
+      );
       if (images.length > 1) {
         const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.8 });
         images.forEach((img, index) => {
-          tl.to(img, {
-            opacity: 1,
-            scale: 1.05,
-            duration: 1.2,
-            ease: "power2.out",
-          }, index === 0 ? 0 : ">")
-            .to(img, {
+          tl.to(
+            img,
+            {
+              opacity: 1,
+              scale: 1.05,
+              duration: 1.2,
+              ease: "power2.out",
+            },
+            index === 0 ? 0 : ">"
+          ).to(
+            img,
+            {
               opacity: 0,
               scale: 1,
               duration: 1.2,
               ease: "power2.inOut",
-            }, "+=3");
+            },
+            "+=3"
+          );
         });
       }
 
@@ -124,27 +133,30 @@ const HeroSection = () => {
           scrollTrigger: {
             trigger: badgesRef.current,
             start: "top 90%",
-            end: "bottom 20%",
-            scrub: 1, // 🎯 ANIMATION LIÉE AU SCROLL
+            end: "bottom 40%",
+            scrub: -2, // 🎯 ANIMATION LIÉE AU SCROLL
             markers: false,
-          }
+          },
         });
 
         // Badge 1 (0-33% du scroll)
-        badgesTl.fromTo(badgeItems[0], 
+        badgesTl.fromTo(
+          badgeItems[0],
           { opacity: 0, y: 80, scale: 0.6, rotationX: 45 },
           { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8 }
         );
 
         // Badge 2 (33-66% du scroll)
-        badgesTl.fromTo(badgeItems[1], 
+        badgesTl.fromTo(
+          badgeItems[1],
           { opacity: 0, y: 80, scale: 0.6, rotationX: 45 },
           { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8 },
           "-=0.6"
         );
 
         // Badge 3 (66-100% du scroll)
-        badgesTl.fromTo(badgeItems[2], 
+        badgesTl.fromTo(
+          badgeItems[2],
           { opacity: 0, y: 80, scale: 0.6, rotationX: 45 },
           { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1 },
           "-=0.6"
@@ -153,21 +165,6 @@ const HeroSection = () => {
     },
     { scope: sectionRef }
   );
-
-  // Halo souris
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = sectionRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setMousePosition({
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      });
-    };
-    const section = sectionRef.current;
-    section?.addEventListener("mousemove", handleMouseMove);
-    return () => section?.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   const handleScrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -215,14 +212,15 @@ const HeroSection = () => {
                   </span>
                 </h1>
                 <p className="hero-subtitle-main text-xl text-slate-300 leading-relaxed">
-                  Nous concevons des sites web, applications, identités visuelles
-                  et solutions IA qui font vraiment grandir votre business.
+                  Nous concevons des sites web, applications, identités
+                  visuelles et solutions IA qui font vraiment grandir votre
+                  business.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-6 pt-8">
                 <Button
-                  className="btn-primary-orange hero-cta-button text-lg px-10 py-6 rounded-full font-bold transition-all duration-300"
+                  className="bg-orange-500 hover:bg-orange-600 text-white hero-cta-button text-lg px-10 py-6 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
                   onClick={() => handleScrollTo("contact")}
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -233,7 +231,7 @@ const HeroSection = () => {
                 </Button>
 
                 <Button
-                  className="btn-outline-orange hero-cta-button text-lg px-10 py-6 rounded-full font-bold transition-all duration-300"
+                  className="bg-white/5 backdrop-blur-sm text-white border border-white/10 hover:bg-white/10 hover:border-orange-400/50 hero-cta-button text-lg px-10 py-6 rounded-full font-bold transition-all duration-300"
                   onClick={() => handleScrollTo("realisations")}
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -249,23 +247,109 @@ const HeroSection = () => {
           {/* Droite */}
           <div className="lg:w-1/2 flex flex-col">
             <div className="flex-1 relative perspective-800">
-              <div className="absolute -top-[3rem] left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center">
+              {/* Logo au-dessus du cadre */}
+              <div className="absolute -top-[4rem] left-1/2 transform -translate-x-1/2 z-40 flex flex-col items-center">
                 <img
                   src="/images/aria-logo.png"
                   alt="Logo Aria"
-                  className="aria-logo w-40 sm:w-44 md:w-48 h-auto object-contain 
-                         drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] 
-                         hover:scale-105 transition-transform duration-500"
+                  className="aria-logo w-44 sm:w-48 md:w-52 h-auto object-contain 
+               drop-shadow-[0_6px_20px_rgba(0,0,0,0.6)] 
+               hover:scale-110 transition-transform duration-500"
                 />
-                <div className="aria-line"></div>
+                <div className="aria-line mt-2 w-24 h-[2px] bg-gradient-to-r from-orange-500 via-blue-500 to-transparent rounded-full"></div>
               </div>
 
+              {/* Cadre avec effet de fusion */}
               <div
                 ref={logosRef}
                 className="relative logo-glass-blur rounded-3xl h-full flex flex-col 
-                       items-center justify-center overflow-hidden p-8 pt-20"
+               items-center justify-center overflow-hidden p-8 pt-24 mt-8"
               >
-                <div className="carousel-gsap relative w-full h-64 rounded-2xl overflow-hidden">
+                {/* Effet de fusion entre le logo et le cadre */}
+                <div
+                  className="absolute -top-12 left-0 right-0 h-24 z-30"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, rgba(8, 12, 25, 0.8) 0%, rgba(8, 12, 25, 0) 100%)",
+                    maskImage:
+                      "radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 70%)",
+                    WebkitMaskImage:
+                      "radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 70%)",
+                    pointerEvents: "none",
+                  }}
+                />
+
+                {/* Animation des logos Aria */}
+                <div className="aria-logo-fall-container absolute inset-0 overflow-hidden rounded-3xl z-0">
+                  {[...Array(12)].map((_, i) => {
+                    const size = 30 + Math.random() * 50;
+                    const opacity = 0.3 + Math.random() * 0.4;
+                    const rotationSpeed = 0.5 + Math.random() * 1;
+                    const startX = Math.random() * 100;
+                    const endX = startX + (Math.random() * 40 - 20);
+
+                    return (
+                      <div
+                        key={i}
+                        className="absolute aria-logo-drop"
+                        style={
+                          {
+                            left: `${startX}%`,
+                            top: `${-10 - Math.random() * 20}%`, // Ajusté pour commencer plus bas
+                            animationDelay: `${Math.random() * 0.3}s`,
+                            animationDuration: `${15 + Math.random() * 10}s`,
+                            opacity: opacity,
+                            "--size": `${size}px`,
+                            "--rotation-speed": `${rotationSpeed}`,
+                            "--start-x": `${startX}%`,
+                            "--end-x": `${endX}%`,
+                            "--scale": 0.5 + Math.random() * 0.5,
+                            "--blur": `${Math.random() * 4}px`,
+                            zIndex: Math.floor(Math.random() * 10),
+                          } as React.CSSProperties
+                        }
+                      >
+                        <div
+                          className="relative"
+                          style={{
+                            width: "var(--size)",
+                            height: "var(--size)",
+                          }}
+                        >
+                          <div
+                            className="absolute -inset-4 rounded-full opacity-30"
+                            style={{
+                              background: `radial-gradient(
+                      circle at center,
+                      rgba(249, 115, 22, 0.3) 0%,
+                      rgba(59, 130, 246, 0.2) 50%,
+                      transparent 70%
+                    )`,
+                              filter: "blur(8px)",
+                            }}
+                          ></div>
+
+                          <img
+                            src="/images/aria-logo.png"
+                            alt="Logo Aria"
+                            className="w-full h-full object-contain drop-shadow-lg"
+                            style={{
+                              filter: `
+                      drop-shadow(0 2px 6px rgba(249, 115, 22, 0.4))
+                      drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4))
+                      blur(var(--blur, 0px))
+                    `,
+                            }}
+                          />
+
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-full mix-blend-overlay"></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="carousel-gsap relative w-full h-64 rounded-2xl overflow-hidden z-10 mt-4">
                   <img
                     src="/images/bureau.jpg"
                     alt="Bureau Aria"
@@ -283,7 +367,10 @@ const HeroSection = () => {
         </div>
 
         {/* Badges - SCRUB SCROLL */}
-        <div ref={badgesRef} className="mt-12 lg:mt-16 pt-8 border-t border-white/10">
+        <div
+          ref={badgesRef}
+          className="mt-12 lg:mt-16 pt-8 border-t border-white/10"
+        >
           <div className="badges-container">
             <div className="badge-item">
               <div className="badge-content">
@@ -300,7 +387,9 @@ const HeroSection = () => {
                 <span className="badge-text">
                   Basé à Madagascar
                   <br />
-                  <span className="text-sm opacity-80">clients partout dans le monde</span>
+                  <span className="text-sm opacity-80">
+                    clients partout dans le monde
+                  </span>
                 </span>
               </div>
             </div>
