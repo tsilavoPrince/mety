@@ -287,20 +287,20 @@ const AboutSection = () => {
     {
       quote: "ARIA a complètement modernisé notre image. Notre nouveau site inspire enfin confiance à nos clients. L'équipe est à l'écoute et très réactive.",
       author: " Jean Dupont",
-      role: "CEO, Startup Tech",
-      company: "TechVision"
+      role: "Directeur",
+      company: "Entreprise Services"
     },
     {
       quote: "Nous avions besoin d'un partenaire sérieux pour structurer notre communication digitale. ARIA nous a guidés de A à Z, avec de vraies propositions.",
-      author: "Thomas B.",
-      role: "Directeur Marketing",
-      company: "EcoSolutions"
+      author: "Marie Martin",
+      role: "Responsable Marketing",
+      company: "École Privée"
     },
     {
       quote: "Grâce aux outils et automatisations mis en place, nous avons gagné un temps précieux au quotidien. On regrette de ne pas l'avoir fait plus tôt.",
-      author: "Sophie M.",
-      role: "Responsable Communication",
-      company: "BioNature"
+      author: "Paul Bernard",
+      role: "CEO",
+      company: "PME Technologie"
     }
   ];
 
