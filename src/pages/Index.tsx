@@ -6,7 +6,7 @@ import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import "@/styles/animations.css";
-import ServicesSection from "@/components/ServiceSection";
+import ServicesSection from "@/components/Services/ServiceSection";
 import ChatbotButton from "@/components/ChatbotButton"
 
 const Index = () => {
