@@ -1,6 +1,16 @@
 const Footer = () => {
   return (
-    <footer id="contact" className="relative bg-gradient-to-t from-black via-slate-950 to-slate-900 text-white overflow-hidden">
+    <footer
+      id="contact"
+      className="relative bg-gradient-to-t from-black via-slate-950 to-slate-900 text-white overflow-hidden"
+    >
+      {/* Fond baobab blur */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/cover.jpg')" }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-black/70 backdrop-blur-lg" />
+
       {/* Halo de fond */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -bottom-20 left-10 w-64 h-64 bg-orange-500/30 blur-3xl rounded-full" />
@@ -13,10 +23,24 @@ const Footer = () => {
         <div className="mx-auto max-w-6xl h-px bg-gradient-to-r from-transparent via-slate-500/60 to-transparent" />
       </div>
 
+      {/* Neige qui tombe */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+        <div className="snowflake">•</div>
+      </div>
+
       <div className="container mx-auto px-6 py-16 relative z-10">
         {/* Contenu principal */}
         <div className="border-t border-white/10 pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 md:grid-flow-col md:auto-cols-fr">
             {/* Company Info */}
             <div className="md:col-span-2 space-y-4 animate-fade-in-up">
               <div className="flex items-center space-x-3 mb-4">
@@ -33,7 +57,7 @@ const Footer = () => {
                 <div>
                   <h3 className="text-2xl font-extrabold tracking-tight">ARIA</h3>
                   <p className="text-xs uppercase tracking-[0.25em] text-orange-300/80">
-                    Agence digitale
+                    Agence digitale — Développement web, branding, marketing & solutions IA.
                   </p>
                 </div>
               </div>
@@ -56,6 +80,36 @@ const Footer = () => {
               </div>
             </div>
 
+            {/* Navigation */}
+            <div className="animate-fade-in-up delay-150">
+              <h4 className="text-lg font-semibold mb-4 text-orange-400">
+                Navigation
+              </h4>
+              <ul className="space-y-2 text-white/75 text-sm">
+                {[
+                  { href: "#accueil", label: "Accueil" },
+                  { href: "#services", label: "Nos Services" },
+                  { href: "#realisations", label: "Nos Réalisations" },
+                  { href: "#about", label: "À Propos" },
+                  { href: "#contact", label: "Nos Contacts" },
+                ].map((item) => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      className="flex items-center group"
+                    >
+                      <span className="mr-2 text-orange-400 group-hover:translate-x-0.5 transition-transform">
+                        •
+                      </span>
+                      <span className="group-hover:text-orange-200 transition-colors duration-200">
+                        {item.label}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {/* Services */}
             <div className="animate-fade-in-up delay-100">
               <h4 className="text-lg font-semibold mb-4 text-orange-400">
@@ -64,22 +118,22 @@ const Footer = () => {
               <ul className="space-y-2 text-white/75 text-sm">
                 {[
                   "Développement Web",
-                  "Design UI/UX",
-                  "Solutions E-commerce",
-                  "Applications Mobile",
-                  "Consulting Digital",
-                  "Maintenance & Support",
+                  "Branding & Design",
+                  "Marketing Digital",
+                  "Solutions IA",
                 ].map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center group"
-                  >
-                    <span className="mr-2 text-orange-400 group-hover:translate-x-0.5 transition-transform">
-                      •
-                    </span>
-                    <span className="group-hover:text-orange-200 transition-colors duration-200">
-                      {item}
-                    </span>
+                  <li key={i} className="flex items-center group">
+                    <a
+                      href="#services"
+                      className="flex items-center group"
+                    >
+                      <span className="mr-2 text-orange-400 group-hover:translate-x-0.5 transition-transform">
+                        •
+                      </span>
+                      <span className="group-hover:text-orange-200 transition-colors duration-200">
+                        {item}
+                      </span>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -99,7 +153,7 @@ const Footer = () => {
                 </div>
                 <div>
                   <p className="font-medium text-white mb-1">Téléphone</p>
-                  <p className="text-white/80">+261 32 03 682 18</p> 
+                  <p className="text-white/80">+261 32 03 682 18</p>
                   <p className="text-white/80">+261 34 17 533 02</p>
                   <p className="text-white/80">+261 34 07 042 09</p>
                 </div>
@@ -116,11 +170,8 @@ const Footer = () => {
           {/* Bas de footer */}
           <div className="border-t border-white/10 mt-10 pt-6 text-center space-y-2 animate-fade-in-up delay-300">
             <p className="text-white/60 text-xs md:text-sm">
-              © 2025 ARIA - Agence de développement digital. Tous droits réservés.
-            </p>
-            <p className="text-white/40 text-[11px] md:text-xs max-w-3xl mx-auto leading-relaxed">
-              Notre approche unique et notre engagement envers l'excellence nous permettent
-              de nous démarquer et de fournir des solutions qui dépassent les attentes.
+              © 2025 ARIA Communication. Tous droits réservés.
+              <a href="" className="text-white/60 text-xs md:text-sm"> | Mentions légales</a>
             </p>
           </div>
         </div>
