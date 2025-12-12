@@ -19,8 +19,7 @@ const Index = () => {
         <ProjectsSection />
         <ServicesSection />
         <ContactSection />
-
-         <ChatbotButton position="bottom-right" />
+        <ChatbotButton position="bottom-right" />
         <Footer />
       </div>
     </div>
